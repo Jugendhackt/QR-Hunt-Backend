@@ -11,10 +11,6 @@ async fn main() -> std::io::Result<()> {
             .allow_any_header()
             .allow_any_method()
             .allow_any_origin();
-           //.allowed_origin("10.20.4.14")
-           //.allowed_methods(vec!["GET", "POST"])
-           //.allowed_headers(vec![header::AUTHORIZATION, header::ACCEPT])
-           //.allowed_header(header::CONTENT_TYPE);
         App::new()
             .service(index)
             .service(hash)
@@ -37,5 +33,4 @@ async fn hash(qr : web::Json<QrCode>) -> impl Responder {
     println!("{}, {}\n", qr.id, qr.content);
 
     qr
-    // access-conrol-allow-origin: 10.20.4.14
 }
