@@ -18,6 +18,7 @@ fn main() -> Result<()> {
         "create table if not exists user (
              uuid integer primary key,
              qrcode_id integer not null references qr_code(id)
+             pwhash text not null unique,
          )",
         NO_PARAMS,
     )?;
