@@ -1,8 +1,11 @@
 mod structs;
 
-use actix_web::{get, post, web, App, HttpServer, Responder};
+use structs::{QrCode, QR, User};
+use actix_web::{get, post, web, App, HttpServer, Responder, HttpResponse};
 use actix_cors::Cors;
-use structs::QrCode;
+use rusqlite::{Connection, Result, params};
+use std::collections::HashMap;
+use actix_web::error::UrlencodedError::ContentType;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -12,8 +15,8 @@ async fn main() -> std::io::Result<()> {
             .allow_any_method()
             .allow_any_origin();
         App::new()
-            .service(index)
             .service(hash)
+            .service(signup)
             .wrap(cors)
     })
         .workers(4)
@@ -22,15 +25,24 @@ async fn main() -> std::io::Result<()> {
     .await
 }
 
-#[get("/")]
-async fn index() -> impl Responder {
-    let obj : QrCode = QrCode { id : 123, content : "Test".to_string() };
-    web::Json(obj)
+#[post("/found")]
+async fn hash(qr : web::Json<QR>) -> impl Responder {
+    println!("{}, {}, {}\n", qr.id, qr.uid, qr.hash);
+
+    let con = Connection::open("../../../db/qr.db").unwrap();
+    let exe = con.execute("INSERT INTO qr_code (?1, ?2, ?3)", params![qr.id, qr.uid, qr.hash]);
+    HttpResponse::Ok().body("success")
 }
 
-#[post("/")]
-async fn hash(qr : web::Json<QrCode>) -> impl Responder {
-    println!("{}, {}\n", qr.id, qr.content);
+#[post("/signup")]
+async fn signup(user : web::Json<User>) -> impl Responder {
+    println!("{}, {}", user.username, user.password_hash);
 
-    qr
+    let con = Connection::open("../../db/qr.db").unwrap();
+    let exe = con.execute("INSERT INTO user (?1, ?2)", params![user.username, user.password_hash]);
+
+    HttpResponse::Ok().body("success")
 }
+
+
+// /login post fuer session tokens oder so was
