@@ -9,7 +9,8 @@ fn main() -> Result<()> {
         "create table if not exists qr_code (
              id integer primary key,
              content text not null unique,
-             qrhash text not null unique
+             qrhash text not null unique,
+             kordinaten text not null unique
          )",
         NO_PARAMS,
     )?;
