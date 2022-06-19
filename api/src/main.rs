@@ -1,3 +1,8 @@
+/*
+let tx = con.transaction().unwrap();
+tx.execute(query, NO_PARAMS);
+tx.commit();
+ */
 mod structs;
 
 use json;
@@ -86,11 +91,6 @@ async fn login(user : web::Json<User>) -> impl Responder {
 
     let query = format!("SELECT EXISTS(SELECT 1 FROM Users WHERE name={}, pwhash={}", user.username, user.password_hash);
     let mut con = Connection::open("database.db").unwrap();
-    /*
-    let tx = con.transaction().unwrap();
-    tx.execute(query, NO_PARAMS);
-    tx.commit();
-     */
 
     let mut stmt = con.prepare(query);
     let x = stmt.execute([]).unwrap();
