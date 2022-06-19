@@ -52,7 +52,6 @@ async fn main() -> std::io::Result<()> {
 #[post("/found")]
 async fn hash(qr : web::Json<QR>) -> impl Responder {
     println!("{}\n", qr.hash);
-
     /*
     let mut con = Connection::open("database.db").unwrap();
 
@@ -60,8 +59,6 @@ async fn hash(qr : web::Json<QR>) -> impl Responder {
     tx.execute(format!("INSERT INTO qr_code values ({}, {}, {})", qr.id, qr.uid, qr.hash));
     tx.commit();
     con.close();
-
-
      */
     HttpResponse::Ok().body("success")
 }
