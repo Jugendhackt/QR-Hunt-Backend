@@ -10,8 +10,6 @@ pub struct QrCode {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct QR {
-   pub id : i32,
-   pub uid : i32,
    pub hash : String
 }
 
@@ -23,6 +21,6 @@ pub struct User {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct ReturnToken {
-   pub token: i64
+   pub token: String
 }
 
