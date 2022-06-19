@@ -20,3 +20,9 @@ pub struct User {
    pub username : String,
    pub password_hash : String
 }
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct ReturnToken {
+   pub token: i64
+}
+
